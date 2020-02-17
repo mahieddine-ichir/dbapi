@@ -1,0 +1,18 @@
+
+spring.datasource:
+  url: jdbc:mysql://localhost:6603/wdm-b2b
+  username: root
+  password: password
+  driver-class-name: com.mysql.cj.jdbc.Driver
+
+# SELECT * FROM my_table ORDER BY table_id DESC limit 0, 10
+query:
+  select: SELECT * FROM %s ORDER BY %s %s limit %d, %d
+  defaults:
+    sort: DESC
+    limit: 100
+    start: 0
+
+spring.security.user:
+  name: thinatech
+  password: password
