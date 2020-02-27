@@ -13,6 +13,8 @@ query:
     limit: 100
     start: 0
 
+  findOne: SELECT * FROM %s WHERE %s
+
 spring.security.user:
   name: thinatech
   password: password

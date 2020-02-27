@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSetMetaData;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 @Repository
@@ -15,6 +13,9 @@ public class GenericRepository {
     @Value("${query.select}")
     private String selectQuery;
 
+    @Value("${query.findOne}")
+    private String findOneQuery;
+
     private final JdbcTemplate jdbcTemplate;
 
     public GenericRepository(JdbcTemplate jdbcTemplate) {
@@ -22,18 +23,11 @@ public class GenericRepository {
     }
 
     public Collection<Map<String, Object>> select(String table, String orderByProperty, Sort sort, Integer start, Integer limit) {
-        return jdbcTemplate.query(String.format(selectQuery, table, orderByProperty, sort, start, limit),
-                (rs, rowNum) -> {
+        return jdbcTemplate.queryForList(String.format(selectQuery, table, orderByProperty, sort, start, limit));
+    }
 
-                    HashMap hashMap = new HashMap();
-                    ResultSetMetaData metaData = rs.getMetaData();
-                    for (int i=1; i<=metaData.getColumnCount(); i++) {
-                        String columnLabel = metaData.getColumnLabel(i);
-                        hashMap.put(columnLabel, rs.getString(columnLabel));
-                    }
-
-                    return hashMap;
-                });
+    public Collection<Map<String, Object>> find(String table, String criteria) {
+        return jdbcTemplate.queryForList(String.format(findOneQuery, table, criteria));
     }
 
     enum Sort {

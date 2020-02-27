@@ -18,6 +18,15 @@ public class TablesQueryApi {
         this.genericRepository = genericRepository;
     }
 
+    @GetMapping("{table}/_search")
+    public Collection<Map<String, Object>> search(@PathVariable("table") String table,
+                                         @RequestParam("q") String query) {
+
+        String criteria = query.replaceAll(":", "=")
+                .replaceAll(",", " AND ");
+        return genericRepository.find(table, criteria);
+    }
+
     @GetMapping("{table}")
     public Map<String, Object> listTable(@PathVariable("table") String table,
                                                      @RequestParam("order_by") String orderByProperty,
