@@ -1,0 +1,3 @@
+{
+  "query": "ALTER TABLE h_digital_archiving ADD Column req_id int"
+}

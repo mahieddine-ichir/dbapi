@@ -1,5 +1,6 @@
-package com.thinatech.mariadbclient;
+package com.thinatech.dbapi.config;
 
+import com.thinatech.dbapi.Cursor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
@@ -9,25 +10,28 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Objects;
+import static com.thinatech.dbapi.config.SortParameterMethodResolverConfiguration.getParameter;
 
 @Component
 @Slf4j
-public class SortParameterMethodResolver implements HandlerMethodArgumentResolver {
+public class CursorParameterMethodResolver implements HandlerMethodArgumentResolver {
 
-    @Value("${query.defaults.sort:asc}")
-    private String sortDefaultValue;
+    @Value("${query.defaults.limit}")
+    private int defaultLimit;
+
+    @Value("${query.defaults.start}")
+    private int defaultStart;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().isAssignableFrom(GenericRepository.Sort.class);
+        return parameter.getParameterType().isAssignableFrom(Cursor.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        if (Objects.isNull(webRequest.getParameter("sort"))) {
-            return GenericRepository.Sort.valueOf(sortDefaultValue.toUpperCase());
-        }
-        return GenericRepository.Sort.valueOf(webRequest.getParameter("sort").toUpperCase());
+        return new Cursor(
+                getParameter(webRequest, "start", defaultStart, s -> Integer.parseInt(s)),
+                getParameter(webRequest, "limit", defaultLimit, s -> Integer.parseInt(s))
+        );
     }
 }
