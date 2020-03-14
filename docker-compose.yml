@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+
+  mysql:
+    image: mysql:5.7.28
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    command: --init-file /data/application/init-schema.sql
+    volumes:
+      - ./sql/init-schema.sql:/data/application/init-schema.sql
+    expose:
+      - 3306
+    ports:
+    - "3306:3306"
+
+  db-api:
+    image: openjdk:12
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db
+      SPRING_SECURITY_USER_NAME: user
+      SPRING_SECURITY_USER_PASSWORD: password
+    ports:
+    - 8080:8080
+    entrypoint:
+      - "java"
+      - "-jar"
+      - "/app/dbapi-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ./target:/app
+    links:
+      - mysql
+
+

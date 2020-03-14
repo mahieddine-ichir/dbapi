@@ -6,3 +6,5 @@ insert into MYTABLE (property1) values ('value5');
 insert into MYTABLE (property1) values ('value6');
 insert into MYTABLE (property1) values ('value7');
 insert into MYTABLE (property1) values ('value8');
+insert into MYTABLE (property1) values ('value9');
+insert into MYTABLE (property1) values ('value10');

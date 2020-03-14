@@ -5,13 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.4.RELEASE</version>
+		<version>2.2.5.RELEASE</version>
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.thinatech</groupId>
 	<artifactId>dbapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mariadb-client</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Database management API</description>
 
 	<properties>
 		<java.version>12</java.version>

@@ -1,0 +1,8 @@
+{
+  "next": "http://localhost/tables/mytable?order_by=mytable_id&start=8&limit=2&sort=DESC",
+  "data": [
+    {"MYTABLE_ID": "10", "PROPERTY1": "value10"},
+    {"MYTABLE_ID": "9", "PROPERTY1": "value9"}
+  ],
+  "previous": "http://localhost/tables/mytable?order_by=mytable_id&start=12&limit=2&sort=DESC"
+}

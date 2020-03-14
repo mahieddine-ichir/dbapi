@@ -1,0 +1,3 @@
+{
+  "query": "ALTER TABLE x_table ADD COLUMN x_bit_null bit null"
+}
