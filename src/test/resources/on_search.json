@@ -1,0 +1,7 @@
+{
+  "next": "http://localhost/tables/x_table/_search?q=id:1&start=100&limit=100&sort=ASC",
+  "data": [
+    {"ID": "1", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value1"}
+  ],
+  "previous": "http://localhost/tables/x_table/_search?q=id:1&start=0&limit=100&sort=ASC"
+}

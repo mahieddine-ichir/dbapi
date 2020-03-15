@@ -27,16 +27,17 @@ public class TablesQueryApi {
     }
 
     @GetMapping("{table}/_search")
-    public Collection<Map<String, String>> search(@PathVariable("table") String table,
-                                                  @RequestParam(value="q", required = false) String query,
-                                                  Cursor cursor
+    public Map<String, Object> search(@PathVariable("table") String table,
+                                      @RequestParam(value="q", required = false) String query,
+                                      Cursor cursor, Sort sort
                                                   ) {
         String criteria = "";
         if (! StringUtils.isEmpty(query)) {
             criteria = query.replaceAll(":", "=")
                     .replaceAll(",", " AND ");
         }
-        return genericRepository.search(table, criteria, cursor);
+        Collection<Map<String, String>> search = genericRepository.search(table, criteria, cursor);
+        return wrapResult(cursor, sort, search);
     }
 
     @GetMapping("{table}")
@@ -45,12 +46,17 @@ public class TablesQueryApi {
                                       Cursor cursor, Sort sort) {
         Collection<Map<String, String>> data = genericRepository.select(table, orderByProperty, sort, cursor);
 
+        return wrapResult(cursor, sort, data);
+    }
+
+    private Map<String, Object> wrapResult(Cursor cursor, Sort sort, Collection<Map<String, String>> data) {
         Map<String, Object> result = new HashMap<>();
         result.put("data", data);
         getNext(cursor, sort).ifPresent(o -> result.put("next", o));
         getPrevious(cursor, sort).ifPresent(o -> result.put("previous", o));
         return result;
     }
+
 
     @GetMapping("{table}/_schema")
     public Map<String, String> schema(@PathVariable String table) throws SQLException {

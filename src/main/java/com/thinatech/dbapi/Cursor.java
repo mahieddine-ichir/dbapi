@@ -15,8 +15,8 @@ public class Cursor {
 
     public Cursor nextPage(Sort sort) {
         switch (sort) {
+                //return new Cursor(start-limit, limit);
             case DESC:
-                return new Cursor(start-limit, limit);
             case ASC:
             default:
                 return new Cursor(start+limit, limit);
@@ -25,8 +25,8 @@ public class Cursor {
 
     public Cursor previousPage(Sort sort) {
         switch (sort) {
+                //return new Cursor(start+limit, limit);
             case DESC:
-                return new Cursor(start+limit, limit);
             case ASC:
             default:
                 return new Cursor(Math.max(start - limit, 0), limit);

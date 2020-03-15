@@ -5,6 +5,7 @@ spring.datasource:
   password: password
   driver-class-name: com.mysql.cj.jdbc.Driver
 
+
 # SELECT * FROM my_table ORDER BY table_id DESC limit 0, 10
 query:
   select: SELECT * FROM %s ORDER BY %s %s limit %d, %d
@@ -21,4 +22,7 @@ spring:
       name: user
       password: password
       roles: USER
+  jpa:
+    show-sql: true
 
+logging.level.org.springframework.jdbc.core: TRACE
