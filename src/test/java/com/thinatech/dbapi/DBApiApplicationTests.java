@@ -33,8 +33,8 @@ class DBApiApplicationTests {
 	MockMvc mockMvc;
 
 	@Test
-	void on_select_0_with_asc() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/mytable?order_by=mytable_id&start=0&limit=2&sort=asc"))
+	void on_select_with_asc() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/x_table?order_by=id&sort=asc&start=0&limit=2"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
@@ -43,8 +43,8 @@ class DBApiApplicationTests {
 	}
 
 	@Test
-	void on_select_10_with_desc() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/mytable?order_by=mytable_id&start=10&limit=2&sort=desc"))
+	void on_select_with_desc() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/x_table?order_by=id&sort=desc&start=0&limit=2"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
@@ -54,55 +54,23 @@ class DBApiApplicationTests {
 
 	@Test
 	void call_api_with_no_parameters() throws Exception {
-		String response = "{\"next\": \"http://localhost/tables/mytable?order_by=mytable_id&start=100&limit=100&sort=ASC\", " +
-		//String response = "{ " +
-				"\"data\": [" +
-				"{\"MYTABLE_ID\": \"1\", \"PROPERTY1\": \"value1\"}, " +
-				"{\"MYTABLE_ID\": \"2\", \"PROPERTY1\": \"value2\"}," +
-				"{\"MYTABLE_ID\": \"3\", \"PROPERTY1\": \"value3\"}," +
-				"{\"MYTABLE_ID\": \"4\", \"PROPERTY1\": \"value4\"}," +
-				"{\"MYTABLE_ID\": \"5\", \"PROPERTY1\": \"value5\"}," +
-				"{\"MYTABLE_ID\": \"6\", \"PROPERTY1\": \"value6\"}," +
-				"{\"MYTABLE_ID\": \"7\", \"PROPERTY1\": \"value7\"}," +
-				"{\"MYTABLE_ID\": \"8\", \"PROPERTY1\": \"value8\"}" +
-				"]}";
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/tables/mytable?order_by=mytable_id"))
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/x_table?order_by=id"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.content().json(response));
+				.andReturn();
+
+		JSONAssert.assertEquals(loadJson("/on_default_parameters.json"), mvcResult.getResponse().getContentAsString(), false);
 	}
 
 	@Test
-	void call_api_with_sort_desc() throws Exception {
-		String response = "{ " +
-				"\"data\": [" +
-				"{\"MYTABLE_ID\": \"8\", \"PROPERTY1\": \"value8\"}," +
-				"{\"MYTABLE_ID\": \"7\", \"PROPERTY1\": \"value7\"}," +
-				"{\"MYTABLE_ID\": \"6\", \"PROPERTY1\": \"value6\"}," +
-				"{\"MYTABLE_ID\": \"5\", \"PROPERTY1\": \"value5\"}," +
-				"{\"MYTABLE_ID\": \"4\", \"PROPERTY1\": \"value4\"}," +
-				"{\"MYTABLE_ID\": \"3\", \"PROPERTY1\": \"value3\"}," +
-				"{\"MYTABLE_ID\": \"2\", \"PROPERTY1\": \"value2\"}," +
-				"{\"MYTABLE_ID\": \"1\", \"PROPERTY1\": \"value1\"}" +
-				"]}";
-
-		mockMvc.perform(MockMvcRequestBuilders.get("/tables/mytable?order_by=mytable_id&sort=DESC"))
+	public void on_search() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/tables/x_table/_search?q=id:1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.content().json(response));
-	}
+				.andReturn();
 
-	@Test
-	public void on_query() throws Exception {
-		String response = "[ " +
-				"{\"MYTABLE_ID\": \"1\", \"PROPERTY1\": \"value1\"}" +
-				"]";
-
-		mockMvc.perform(MockMvcRequestBuilders.get("/tables/mytable/_search?q=mytable_id:1"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.content().json(response));
+		JSONAssert.assertEquals(loadJson("/on_search.json"), mvcResult.getResponse().getContentAsString(), false);
 	}
 
 	private String loadJson(String resource) throws URISyntaxException, IOException {

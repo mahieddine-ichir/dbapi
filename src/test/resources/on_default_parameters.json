@@ -1,0 +1,16 @@
+{
+  "next": "http://localhost/tables/x_table?order_by=id&start=100&limit=100&sort=ASC",
+  "data": [
+    {"ID": "1", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value1"},
+    {"ID": "2", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value2"},
+    {"ID": "3", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value3"},
+    {"ID": "4", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value4"},
+    {"ID": "5", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value5"},
+    {"ID": "6", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value6"},
+    {"ID": "7", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value7"},
+    {"ID": "8", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value8"},
+    {"ID": "9", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value9"},
+    {"ID": "10", "VARCHAR_64": null, "CHAR_11_NOTNULL": "value10"}
+  ],
+  "previous": "http://localhost/tables/x_table?order_by=id&start=0&limit=100&sort=ASC"
+}
